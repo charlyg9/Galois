@@ -1,0 +1,145 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage{vmargin}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\tcbuselibrary{theorems}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\obs}[1][\!\!]{ \underline{Observación #1:} }
+\newcommand{\ej}{\underline{Ejemplo:} }
+\newcommand{\ejs}{\underline{Ejemplos:} }
+
+\tcbset{
+	defstyle/.style={colback=blue!5, colframe=blue!60!black, before={\vspace{5mm}}, after={\vspace{5mm}}},
+	theostyle/.style={colback=red!5, colframe=red!60!black, before={\vspace{5mm}}, after={\vspace{5mm}}}
+}
+
+\newtcbtheorem[number within=section]{definition}{Definición}{defstyle}{def}
+\newtcbtheorem[number within=section]{theorem}{Teorema}{theostyle}{theo}
+
+\setlength{\parindent}{0pt}
+\setmargins{2.5cm}       % margen izquierdo
+{1.5cm}                        % margen superior
+{16cm}                      % anchura del texto
+{23.42cm}                    % altura del texto
+{10pt}                           % altura de los encabezados
+{1cm}                           % espacio entre el texto y los encabezados
+{0pt}                             % altura del pie de página
+{2cm}
+
+\begin{document}
+
+\title{Teoría de Galois}
+\author{Carlos Gómez-Lobo}
+\maketitle
+
+\begin{abstract}
+El objetivo de la asignatura será estudiar toda la teoría necesaria para demostrar el teorema de Galois.
+\end{abstract}
+\newpage
+
+\section{Repaso de anillos}
+
+A continuación vamos a repasar algunos conceptos sobre anillos y especialmente anillos de polinomios, empezando por la definición de anillo.
+
+\begin{definition}{Anillo}{anillo}
+Un \textbf{anillo} es un conjunto no vacío dotado de dos operaciones, que denotaremos como suma (=) y multiplicación (*) y que cumplen las siguientes propiedades:
+\begin{itemize}
+	\item $(R, +)$: grupo abeliano
+	\item $(R, \cdot)$: operación binaria interna y cumple la propiedad asociativa
+\end{itemize}
+Si además $(R, \cdot)$ tiene identidad, es decir, existe un elemento $e \in R$ tal que $e \cdot r = r \cdot e = r \; \forall r \in R$, diremos que $R$ es un anillo con unidad y si además es abeliano, entonces será un anillo conmutativo.
+\end{definition}
+
+A nosotros en esta asignatura nos interesarán especialmente estos últimos y nos referiremos a estos simplemente como anillos sin especificar que son conmutativos y sin unidad.
+
+\vspace{3mm}
+
+\underline{Ejemplos:} $\Z, \Z_n, \R, \C, \Q, M_n(\R)$ (no conmutativo), etc.
+
+\vspace{3mm}
+
+\underline{Notación:} \begin{itemize}
+	\item 0 para el elemento neutro de la suma
+	\item $-a$ para el elemento inverso aditivo (opuesto).
+	\item 1 para el elemento neutro de la multiplicación
+	\item $a^{-1}$ para el inverso multiplicativo, si existe
+	\item $na = \underbrace{a + ... + a}_{n veces}$
+	
+	\vspace{-3mm}
+	
+	\item $a^n = \underbrace{a \cdot ... \cdot a}_{n veces}$
+\end{itemize}
+
+\begin{definition}{Cuerpo}{cuerpo}
+Un anillo $(R, +, -)$ es un \textbf{cuerpo} si $(R^* = R \backslash \{0\}, \cdot)$ es un grupo abeliano.
+\end{definition}
+
+\underline{Ejemplos:} $\Q, \R, \C, \Z_p$ p primo, etc.
+
+\vspace{3mm}
+
+\underline{Notación:} $\; \Z_n  \left \{
+\begin{matrix*}[l]
+\textrm{grupo aditivo} \rightarrow \C_n \\
+\textrm{anillo} \rightarrow \Z_n \\
+\textrm{cuerpo} \rightarrow \mathbb{F}_n \textrm{(n primo)}
+\end{matrix*} \right .$
+
+\begin{definition}{Divisor de cero}{div_cero}
+Sea $R$ un anillo. Diremos que un elemento $a \in R, \; a \neq 0$ es un \textbf{divisor de cero} si $\exists b \in R, \; b \neq 0$ tal que $a \cdot b = 0$.
+\end{definition}
+
+\ej En $\Z_6: \bar{2}, \bar{3} \neq \bar{0}$ y $\bar{2} \cdot \bar{3} = 0$.
+
+\begin{definition}{Dominio de integridad}{DI}
+Sea $R$ un anillo, si $R$ no tiene divisores de cero, entonces se dice que es un \textbf{dominio de integridad}.
+\end{definition}
+
+\ejs $\Z, \Q, \R, \C, \F_p$
+
+\begin{definition}{"Divide a"}{dividea}
+Diremos que $a$ \textbf{divide a} $b$ en $R$ si $\exists c \in R$ tal que $b = a \cdot c$ y escribiremos $a | b$.
+\end{definition}
+
+\begin{definition}{Subanillo}{subanillo}
+Diremos que $S \subset R$ es un \textbf{subanillo} si $(S, +, \cdot)$ es un anillo.
+\end{definition}
+
+\obs $S \subset R$ es un subanillo s y solo si:
+
+\begin{enumerate}[label=\arabic*)]
+	\item $S \neq \emptyset$
+	\item $\forall a, b \in S, a + b \in S$
+	\item $\forall a, b \in S, a \cdot b \in S$
+	\item $1 \in S$
+\end{enumerate}
+
+\vspace{3mm}
+
+\ej $\Z \subset \Q \subset \R \subset \C$
+
+\begin{definition}{Menor subanillo que contiene a un elemento}{menoranillo}
+Dado un anillo $R$ y un elemento $a$, podemos definir el \textbf{menor subanillo que contiene a $\mathbf{R}$ y al elemento $\mathbf{a}$} como $R[a] = \left \{ \displaystyle\sum r_i \cdot a^k, \forall r \in R; i, k \in \N \right \}$
+\end{definition}
+
+\ej $\Z[i] = \{a + bi, a, b \in \Z\} \subset \C$. Otra forma de ver este anillo es como la intersección de todos los subanillos de $\C$ que contienen a $\Z$ y a $i$.
+
+\vspace{3mm}
+
+\obs De la misma forma podemos definir el menor cuerpo que contiene a un elemento y que denotamos como $R(a)$.
+
+\vspace{3mm}
+
+\ej $\Q[\sqrt{2}] = \{a + b\sqrt{2}, \; a, b \in \Q\}$, $\Q(\sqrt{2}) = \left \{ \dfrac{a + b\sqrt{2}}{\underbrace{c + d\sqrt{2}}_{\neq 0}}, \; a, b, c, d \in \Q \right \}$, 
+
+\end{document}
