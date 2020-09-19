@@ -2,10 +2,12 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsfonts}
 \usepackage{amsmath}
+
 \usepackage{tcolorbox}
 \usepackage{vmargin}
 \usepackage{mathtools}
 \usepackage{enumitem}
+\usepackage{hyperref}
 \tcbuselibrary{theorems}
 
 \newcommand{\R}{\mathbb{R}}
@@ -17,14 +19,18 @@
 \newcommand{\obs}[1][\!\!]{ \underline{Observación #1:} }
 \newcommand{\ej}{\underline{Ejemplo:} }
 \newcommand{\ejs}{\underline{Ejemplos:} }
+\newcommand{\nota}{\underline{Notación:} }
+\newcommand{\demo}{\underline{Demostración:} }
 
 \tcbset{
-	defstyle/.style={colback=blue!5, colframe=blue!60!black, before={\vspace{5mm}}, after={\vspace{5mm}}},
-	theostyle/.style={colback=red!5, colframe=red!60!black, before={\vspace{5mm}}, after={\vspace{5mm}}}
+	defstyle/.style={colback=blue!5, colframe=blue!80!black, before={\vspace{5mm}}, after={\vspace{5mm}}},, before={\vspace{5mm}}
+	theostyle/.style={colback=red!5, colframe=red!80!black, before={\vspace{5mm}}, after={\vspace{5mm}}},
+	propstyle/.style={colback=green!5, colframe=green!60!black, before={\vspace{5mm}}, after={\vspace{5mm}}}
 }
 
 \newtcbtheorem[number within=section]{definition}{Definición}{defstyle}{def}
 \newtcbtheorem[number within=section]{theorem}{Teorema}{theostyle}{theo}
+\newtcbtheorem[number within=section]{proposition}{Proposición}{propstyle}{prop}
 
 \setlength{\parindent}{0pt}
 \setmargins{2.5cm}       % margen izquierdo
@@ -40,12 +46,8 @@
 
 \title{Teoría de Galois}
 \author{Carlos Gómez-Lobo}
+\date{}
 \maketitle
-
-\begin{abstract}
-El objetivo de la asignatura será estudiar toda la teoría necesaria para demostrar el teorema de Galois.
-\end{abstract}
-\newpage
 
 \section{Repaso de anillos}
 
@@ -111,6 +113,10 @@ Sea $R$ un anillo, si $R$ no tiene divisores de cero, entonces se dice que es un
 Diremos que $a$ \textbf{divide a} $b$ en $R$ si $\exists c \in R$ tal que $b = a \cdot c$ y escribiremos $a | b$.
 \end{definition}
 
+\subsection{Subanillos}
+
+\vspace{3mm}
+
 \begin{definition}{Subanillo}{subanillo}
 Diremos que $S \subset R$ es un \textbf{subanillo} si $(S, +, \cdot)$ es un anillo.
 \end{definition}
@@ -140,6 +146,85 @@ Dado un anillo $R$ y un elemento $a$, podemos definir el \textbf{menor subanillo
 
 \vspace{3mm}
 
-\ej $\Q[\sqrt{2}] = \{a + b\sqrt{2}, \; a, b \in \Q\}$, $\Q(\sqrt{2}) = \left \{ \dfrac{a + b\sqrt{2}}{\underbrace{c + d\sqrt{2}}_{\neq 0}}, \; a, b, c, d \in \Q \right \}$, 
+\ej $\Q[\sqrt{2}] = \{a + b\sqrt{2}, \; a, b \in \Q\}$, $\Q(\sqrt{2}) = \bigg \{ \dfrac{a + b\sqrt{2}}{\underbrace{c + d\sqrt{2}}_{\neq 0}}, \; a, b, c, d \in \Q \bigg \}$, $\Q \subset \Q[\sqrt{2}] \subset \Q(\sqrt{2}) \subset \R$
+
+\subsection{Anillos de polinomios}
+
+\vspace{3mm}
+
+\begin{definition}{Anillo de polinomios}{anillopoli}
+Sea $R$ un anillo, llamaremos a $R[x]$ al \textbf{anillo de polinomios con coeficientes en $\mathbf{R}$} y que será de la forma $R[x] = \left \{ \displaystyle\sum_{k = 0}^{n} r_k x^k, \; \forall r \in R \right \}$.
+\end{definition}
+
+\ejs $\C[x], \R[x], \Q[x], \Z[x]$, etc.
+
+\begin{definition}{Coeficiente director}{coef_dir}
+El \textbf{coeficiente director} de un polinomio es el coeficiente distinto de 0 que multiplica a la x de mayor grado.
+\end{definition}
+
+\nota Grado de $p(x) := deg(p(x))$
+
+\vspace{3mm}
+
+\begin{proposition}{}{grado_prod}
+El grado del producto de dos polinomios puede tener distintos valores en función de si el anillo sobre el que se construye es o no un \hyperref[def:DI]{DI}:
+\[
+deg(p(x) \cdot q(x)) = \left \{
+\begin{matrix*}[l]
+deg(p(x)) + deg(q(x)) \text{ si $R$ es dominio de integridad} \\
+\leq deg(p(x)) + deg(q(x)) \text{ si no lo es}
+\end{matrix*} \right .
+\]
+\end{proposition}
+
+\demo Obvio.
+
+\vspace{3mm}
+
+\ej $\Z_4, \left .
+\begin{matrix*}[l]
+p(x) = 2x + 1 \\
+q(x) = 2x
+\end{matrix*} \right \}
+deg(p(x) \cdot q(x) = 1 < 2$
+
+\vspace{3mm}
+
+\begin{proposition}{}{grado_DI}
+ Sea $R$ un \hyperref[def:cuerpo]{cuerpo}, entonces $R$ es siempre \hyperref[def:DI]{dominio de integridad} y para cualesquiera polinomios de $R[x]$ se cumple que $deg(p(x)) \cdot deg(q(x)) = deg(p(x)) + deg(q(x))$.	
+\end{proposition} 
+ 
+\demo Para demostrar que un cuerpo siempre es un \hyperref[def:DI]{DI} vamos a ver por reducción al absurdo que todo elemento de un anillo que tenga inverso multiplicativo no es \hyperref[def:div_cero]{divisor de cero}.
+
+Suponemos que $r \neq 0 \in R$ es \hyperref[def:div_cero]{divisor de cero}, es decir, $\exists r^{-1}$ tal que $r' \neq 0, r \cdot r' = 0$. Ahora suponemos además que $r$ es invertible, es decir, $\exists r^{-1}$ tal que $r \cdot r^{-1} = 1$. Entonces $r \cdot r^{-1} = 1 \implies (r' \cdot r) \cdot r^{-1} = b \implies 0 = b$. Contradicción.
+
+De la misma forma se puede ver que una unidad no puede ser un \hyperref[def:div_cero]{divisor de cero} y como en un cuerpo todos sus elementos son unidades, no hay ningún \hyperref[def:div_cero]{divisor de cero} y por tanto es un \hyperref[def:DI]{dominio de integridad}.
+
+Por esto y por la proposición \ref{prop:grado_prod}, queda demostrado.
+
+\begin{proposition}{}{apoli_nocuerpo}
+Sea $K$ un cuerpo, entonces el anillo de polinomios asociado a $K, \; K[x]$  \textbf{no} es un cuerpo y sus únicos elementos invertibles son los pertecientes al cuerpo $K$ no nulos.
+\end{proposition}
+
+\demo Sea $p(x) \in K[x], \; p(x) \neq 0$ invertible en $K[x]$. Entonces $p(x) \cdot p^{-1}(x) = 1, \; deg(1) = 0$ y como por la proposición \ref{prop:grado_prod}, $deg(p(x) \cdot p^{-1}(x)) \leq deg(p(x)) + deg(p^{-1}(x))$, se tiene que $deg(p(x)) = deg(p^{-1}(x)) = 0$, por lo que los únicos elementos invertibles en $K[x]$ son los de grado 0, que son los no nulos que pertenecen a $K$. Entonces, puesto que no todos los elementos de $K[x]$ son invertibles, $K[x]$ no es un cuerpo.
+
+\vspace{3mm}
+
+\obs El menor cuerpo que contiene a x y a los elementos de $K$ es \\ $K(x) = \left \{ \dfrac{p(x)}{q(x)} : p(x), q(x) \in K[x], q(x) \neq 0 \right \}$, teniendo en cuenta que $\dfrac{p(x)}{q(x)} = \dfrac{p'(x)}{q'(x)} \iff p(x) q'(x) = p'(x) q(x)$.
+
+\begin{definition}{Polinomio mónico}{poli_mon}
+Un \textbf{polinomio mónico} es aquel cuyo \hyperref[def:coef_dir]{coeficiente director} es 1.
+\end{definition}
+
+\subsection{Ideales en un anillo}
+
+\vspace{3mm}
+
+\begin{definition}{Ideal}{ideal}
+Sea $R$ un anillo. Un \textbf{ideal} en $R$ es un subconjunto no vacío $I \subset R$ tal que:
+\begin{enumerate}[label=\roman*)]
+\item $(I, +)$ es un subgrupo de $R$
+\end{enumerate}
+\end{definition}
 
 \end{document}
