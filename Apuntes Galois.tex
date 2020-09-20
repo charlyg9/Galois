@@ -1,33 +1,48 @@
 \documentclass[10pt, a4paper]{article}
+
 \usepackage[utf8]{inputenc}
 \usepackage{amsfonts}
 \usepackage{amsmath}
-
-\usepackage{tcolorbox}
+\usepackage{amssymb}
 \usepackage{vmargin}
 \usepackage{mathtools}
 \usepackage{enumitem}
+\usepackage{cancel}
 \usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{faktor}
+\usepackage{tcolorbox}
 \tcbuselibrary{theorems}
 
+% Comandos útiles
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\F}{\mathbb{F}}
-\newcommand{\obs}[1][\!\!]{ \underline{Observación #1:} }
+\newcommand{\obs}{\underline{Observación:} }
 \newcommand{\ej}{\underline{Ejemplo:} }
 \newcommand{\ejs}{\underline{Ejemplos:} }
 \newcommand{\nota}{\underline{Notación:} }
 \newcommand{\demo}{\underline{Demostración:} }
+\newcommand{\anillo}[1][]{\hyperref[def:anillo]{anillo}#1 }
+\newcommand{\cuerpo}[1][]{\hyperref[def:cuerpo]{cuerpo}#1 }
+
+\newenvironment{enumerater}{\begin{enumerate}[label=\roman*)]}
+{\end{enumerate}}
+\newenvironment{enumeratea}{\begin{enumerate}[label=\arabic*)]}
+{\end{enumerate}}
 
 \tcbset{
-	defstyle/.style={colback=blue!5, colframe=blue!80!black, before={\vspace{5mm}}, after={\vspace{5mm}}},, before={\vspace{5mm}}
-	theostyle/.style={colback=red!5, colframe=red!80!black, before={\vspace{5mm}}, after={\vspace{5mm}}},
-	propstyle/.style={colback=green!5, colframe=green!60!black, before={\vspace{5mm}}, after={\vspace{5mm}}}
+	% Definición de estilos de recuadros
+	defstyle/.style={colback=blue!5, colframe=blue!70!black, before={\vspace{5mm}}, after={\vspace{5mm}}}, % Definiciones
+	theostyle/.style={colback=red!5, colframe=red!80!black, before={\vspace{5mm}}, after={\vspace{5mm}}}, % Teoremas
+	propstyle/.style={colback=green!5, colframe=green!60!black, before={\vspace{5mm}}, after={\vspace{5mm}}} % Proposiciones
 }
 
+% Definicion de las cajas
 \newtcbtheorem[number within=section]{definition}{Definición}{defstyle}{def}
 \newtcbtheorem[number within=section]{theorem}{Teorema}{theostyle}{theo}
 \newtcbtheorem[number within=section]{proposition}{Proposición}{propstyle}{prop}
@@ -49,12 +64,12 @@
 \date{}
 \maketitle
 
-\section{Repaso de anillos}
+\section{Anillos}
 
 A continuación vamos a repasar algunos conceptos sobre anillos y especialmente anillos de polinomios, empezando por la definición de anillo.
 
 \begin{definition}{Anillo}{anillo}
-Un \textbf{anillo} es un conjunto no vacío dotado de dos operaciones, que denotaremos como suma (=) y multiplicación (*) y que cumplen las siguientes propiedades:
+Un \textbf{anillo} es un conjunto no vacío dotado de dos operaciones, que denotaremos como suma (+) y multiplicación ($\cdot$) y que cumplen las siguientes propiedades:
 \begin{itemize}
 	\item $(R, +)$: grupo abeliano
 	\item $(R, \cdot)$: operación binaria interna y cumple la propiedad asociativa
@@ -75,11 +90,11 @@ A nosotros en esta asignatura nos interesarán especialmente estos últimos y no
 	\item $-a$ para el elemento inverso aditivo (opuesto).
 	\item 1 para el elemento neutro de la multiplicación
 	\item $a^{-1}$ para el inverso multiplicativo, si existe
-	\item $na = \underbrace{a + ... + a}_{n veces}$
+	\item $na = \underbrace{a + ... + a}_{\text{n veces}}$
 	
 	\vspace{-3mm}
 	
-	\item $a^n = \underbrace{a \cdot ... \cdot a}_{n veces}$
+	\item $a^n = \underbrace{a \cdot ... \cdot a}_{\text{n veces}}$
 \end{itemize}
 
 \begin{definition}{Cuerpo}{cuerpo}
@@ -171,7 +186,7 @@ El grado del producto de dos polinomios puede tener distintos valores en funció
 \[
 deg(p(x) \cdot q(x)) = \left \{
 \begin{matrix*}[l]
-deg(p(x)) + deg(q(x)) \text{ si $R$ es dominio de integridad} \\
+deg(p(x)) + deg(q(x)) \text{ si $R$ \hyperref[def:DI]{es dominio de integridad}} \\
 \leq deg(p(x)) + deg(q(x)) \text{ si no lo es}
 \end{matrix*} \right .
 \]
@@ -223,8 +238,155 @@ Un \textbf{polinomio mónico} es aquel cuyo \hyperref[def:coef_dir]{coeficiente 
 \begin{definition}{Ideal}{ideal}
 Sea $R$ un anillo. Un \textbf{ideal} en $R$ es un subconjunto no vacío $I \subset R$ tal que:
 \begin{enumerate}[label=\roman*)]
-\item $(I, +)$ es un subgrupo de $R$
+	\item $(I, +)$ es un subgrupo de $R$.
+	\item $\forall r \in R, \; \forall a \in I, \; r \cdot a \in I$ (Propiedad de absorción).
 \end{enumerate}
 \end{definition}
+
+\begin{proposition}{Criterio para ideales}{crit_ideal}
+Para que un subanillo $I \subset R, \; I \neq \emptyset$ sea un ideal tiene que cumplir que:
+
+\begin{enumerate}[label=\roman*)]
+	\item $\forall a, b \in I, \; a - b \in I \; (a + b \in I)$.
+	\item $\forall r \in R, \; \forall a \in I, \; r \cdot a \in I$.
+\end{enumerate}
+\end{proposition}
+
+\ejs
+\begin{enumerate}[label=\arabic*)]
+	\item $R$ anillo cualquiera
+		\begin{enumerate}[label=\roman*)]
+			\item $R$ es un ideal (el ideal trivial).
+			\item \{0\} siempre es un ideal.
+		\end{enumerate}
+
+Si $I \subset R$ es un ideal e $I \neq R$, diremos que $I$ es un \textbf{ideal propio}.
+
+	\item En $\Z$ todos los anillos de la forma $I = \{2n : n \in \Z\}$ son ideales.
+	
+	\item $\Q[x], \; I = \{p(x) : p(r_0) = 0, \; r_0 \in \Q \}$
+			
+			Comprobación: Sean $p(x), q(x), t(x) \in \Q[x]$ tal que $p(r_0) = q(r_0) = 0,  \; t(x)$ cualquiera, entonces:
+		\begin{enumerater}
+			\item $s(r_0) = p(r_0) - q(r_0) = 0 \implies s(x) \in I$.
+			\item $z(r_0) = p(r_0) \cdot t(r_0) = 0 \implies z(x) \in I$.
+		\end{enumerater}
+	\item 
+\end{enumerate}
+
+\begin{proposition}{}{ideales_z}
+Todos los ideales de $\Z$ son de la forma $\{kn : n \in \Z\}$.
+\end{proposition}
+
+\demo Sale del algoritmo de la división.
+
+\vspace{5mm}
+
+\obs Sea $R$ un anillo y sean $I, J \subset R$ ideales, entonces:
+
+\begin{enumerater}
+	\item En general, $I \cup J$ \textbf{no} es un ideal.
+	\item $I \cap J$ es un ideal
+\end{enumerater}
+
+\begin{proposition}{}{ideales_cuerpo}
+Sea $K$ un anillo, entonces $K$ es un \hyperref[def:cuerpo]{cuerpo} si y solo si continene dos \hyperref[def:ideal]{ideales}: $\{0\}$ y $K$.
+\end{proposition}
+
+\demo 
+
+$\implies$) Sea $I \in K, \; I \neq \{0\}$ un ideal y $r \in I, \; r \neq 0$ uno de sus elementos. Por ser $K$ un cuerpo $\exists r^{-1}$ tal que $r \cdot r^{-1} = 1 \in I$ (Propiedad de absorción) $\implies I = K$.
+
+$\impliedby$) Sea $K$ un anillo y $r \in K, \; r \neq 0$. Vamos a ver que $r$ tiene un inverso.
+
+Definimos $I := \{rs : s \in K\}$ que es un ideal. Puesto que $I \neq \{0\}$ y solo hay dos ideales, $I = K \implies 1 \in K \implies \exists s \in K$ tal que $s \cdot r = 1 \implies s = r^{-1}$.
+
+\begin{definition}{Ideal generado}{ideal_generado}
+Sea $R$ un \anillo y $\{r_i\}$ una familia de elementos de $R$. Diremos que el \textbf{ideal generado} por $\{r_i\}_{i \in I}$ es el ideal más pequeño que contiene a $\{r_i\}_{i \in I}$ y lo denotamos por $<r_i>_{i \in I} = \left \{ \displaystyle\sum s_j r_i : s_j \in R \right \}$.
+\end{definition}
+
+\ej En $\Z[x]$ el ideal generado por $<2, x> = \{2q(x) + xp(x)\ : q(x), p(x) \in \Z\}$
+
+\begin{definition}{Ideal principal}{ideal_principal}
+Sea $R$ un \anillo, diremos que $I \subset R$ es un \textbf{ideal principal} si $\exists a \in R$ tal que $I = <a>$.
+\end{definition}
+
+\ej
+\begin{enumeratea}
+\item En $\Z$ todos los ideales son principales.
+\item $<2, x> \subset \Z[x]$ no es principal.
+
+Comprobación: Suponemos que $\exists g(x) \in \Z[x]$ tal que $<2, x> = <g(x)>$, entonces $\exists q(x)$ tal que $g(x) \cdot q(x) = 2 \implies deg(g(x)) = 0 \implies g(x) = k \in \Z \implies k = \pm 1, \pm 2$
+
+Supongamos que $k = \pm 1$. Entonces $<g(x)> = <\pm 1> =<2, x> = \Z[x]$. Sin embargo, $1 = \underbrace{2p(x)}_{\text{coef. par}} + \cancelto{0}{\underbrace{q(x)x}_{grado \geq 1}}$. Contradicción.
+
+Ahora si suponemos que $k = \pm 2 \implies <g(x)> = <\pm 2> = <2, x> =$ polinomios con coeficientes pares, pero $x \notin <\pm 2>$. Contradicción.
+\end{enumeratea}
+
+\begin{definition}{Dominio de ideales principales (DIP)}{DIP}
+Sea $R$ un \anillo{,} si todos los \hyperref[def:ideal]{ideales} contenidos en $R$ con principales se dice que es un \textbf{dominio de ideales principales}.
+\end{definition}
+
+\begin{proposition}{}{cuerpo_ideal_ppal}
+Sea $K$ un \cuerpo entonces $K[x]$ es un \hyperref[def:DIP]{dominio de ideales principales}.
+\end{proposition}
+
+\demo Sea $I \subset K[x]$ un ideal.
+\begin{itemize}
+\item Si $I = \{0\}$ \checkmark
+\item Suponemos que $I \neq \{0\} \implies \exists p(x) \in I, \; p(x) \neq 0$ y podemos definir $\Lambda = \{deg(p(x)) : p(x) \in I\} \neq \emptyset, \; \Lambda \subset \N$. Por la propiedad de buen orden de $\N$ podemos afirmar que $\Lambda$ tiene un elemento mínimo $n$, por lo que $\exists p(x) \in I$ tal que $deg(px) = n$ y además $<p(x)> \subseteq I$. Ahora vamos a demostrar por el algoritmo de la división de polinomios que $<p(x)> = I$.
+
+Sea $s(x) \in I \implies s(x) = q(x)p(x) + r(x)$ y hay dos posibilidades para $r(x)$:
+	\begin{itemize}[label=$\circ$]
+		\item $r(x) = 0 \implies p(x) \mid q(x) \; \checkmark$
+		\item $r(x) \neq 0, \; \underbrace{s(x)}_{\in I} = \underbrace{q(x) \underbrace{p(x)}_{\in I}}_{\in I} + r(x) \overset{Prop. 1}{\implies} r(x) \in I$. Contradicción porque $deg(r(x)) < deg(p(x))$ que es el grado mínimo en $I$.
+	\end{itemize}
+\end{itemize}
+
+\ej Usando un argumento similar con el algoritmo de la división en $\Z$ se puede probar que este es un \hyperref[def:DIP]{DIP}.
+
+\vspace{5mm}
+
+\obs El generador de un ideal $I \subset K[x]$ no tiene por qué ser único: si $I = <p (x)>$ y $a \in K$, entonces $I = <ap(x)>$. Para describir estos anillos de forma canónica utilizaremos como generador un \hyperref[def:poli_mon]{polinomio mónico}.
+
+\subsection{Anillos cociente}
+
+\vspace{3mm}
+
+\begin{definition}{Anillo conciente}{anillo_conciente}
+Sea $I \subset R$ un ideal en $R$, podemos definir como en los grupos al conjunto $\faktor{R}{I}$ como el \textbf{anillo cociente} según la relación de equivalencia $a = b \iff a - b \in I$.
+\end{definition}
+
+Ahora vamos a comprobar algunas cosas sobre la definición anterior:
+
+\begin{enumerate}
+	\item La relación de equivalencia usada es realmente una relación de equivalencia estudiando sus tres propiedades:
+	\begin{enumerater}
+		\item Reflexiva: $a - a = 0 \in I$ \checkmark
+		\item Simétrica: $a = b \implies a - b \in I \implies (a - b) \cdot -1 \in I \implies (b - a) \in I \implies b = a$ \checkmark
+		\item Transitiva: $a = b$ y $b = c \implies a - b \in I$ y $b - c \in I \overset{\text{Prop. 1}}{\implies} a - b + b -c = a - b \in I \implies a = c \;$\checkmark
+	\end{enumerater}
+	\item El conjunto cociente resultado tiene estructura de anillo. Para ello solo es necesario comprobar que el producto está bien definido, es decir, de dos elementos no depende del representante escogido.
+	
+	Sean $\bar{a} = \{a + I\}, \bar{b} = \{b + I\}$, entonces $(a + I)(b + I) = ab + \overbrace{\underbrace{aI}_{\in I} + \underbrace{bI}_{\in I} + I}^{\in I} = ab + I \implies \bar{a}\bar{b} = \overline{ab} \;$\checkmark
+\end{enumerate}
+
+\vspace{3mm}
+
+\obs 
+\begin{enumerate}
+	\item Si el anillo $R$ es conmutativo y con unidad, entonces $\faktor{R}{I}$ tamibién lo es y su unidad es $\bar{1}$.
+	\item $\forall a \in I, \; \bar{c} = 0$.
+\end{enumerate}
+
+\ejs 
+\begin{enumeratea}
+	\item $\faktor{\Z}{n\Z} = \Z_n$
+	\item $\faktor{R}{R} = \{0\}$
+	\item $\faktor{R}{\{0\}} = R$
+	\item $S = \faktor{\R[x] \;}{<x^2 + 1>}$: ¿Qué pinta tiene? En primer lugar, vamos a comprobar que todo elemento de $S$ es equivalente a un elemento de la forma $ax + b, \; a, b \in \R$.
+	
+	Sea $p(x) \in \R[x]$, ¿$\overline{p(x)}$? $p(x) = q(x)(x^2 + 1) + r(x)$ donde $r(x) = 0$ ó $deg(r(x)) \leq 1 \implies p(x) - r(x) \in <x^2 + 1> \implies \overline{p(x)} = \overline{r(x)}$.
+\end{enumeratea}
 
 \end{document}
