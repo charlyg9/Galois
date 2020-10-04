@@ -10,6 +10,7 @@
 \usepackage{cancel}
 \usepackage{hyperref}
 \usepackage{tikz}
+\usetikzlibrary{matrix}
 \usepackage{faktor}
 \usepackage{tcolorbox}
 \tcbuselibrary{theorems}
@@ -22,6 +23,7 @@
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\F}{\mathbb{F}}
+\newcommand{\eqc}[1]{\stackrel{\mathclap{\normalfont\mbox{\scriptsize{#1}}}}{=}}
 \newcommand{\obs}{\underline{Observación:} }
 \newcommand{\ej}{\underline{Ejemplo:} }
 \newcommand{\ejs}{\underline{Ejemplos:} }
@@ -29,6 +31,11 @@
 \newcommand{\demo}{\underline{Demostración:} }
 \newcommand{\anillo}[1][]{\hyperref[def:anillo]{anillo}#1 }
 \newcommand{\cuerpo}[1][]{\hyperref[def:cuerpo]{cuerpo}#1 }
+\newcommand{\ideal}[1][]{\hyperref[def:ideal]{ideal}#1 }
+\newcommand{\bs}{\!\!\!\!}
+\newcommand{\longhookrightarrow}{\lhook\joinrel\longrightarrow}
+
+\definecolor{royalfuchsia}{rgb}{0.79, 0.17, 0.57}
 
 \newenvironment{enumerater}{\begin{enumerate}[label=\roman*)]}
 {\end{enumerate}}
@@ -37,15 +44,17 @@
 
 \tcbset{
 	% Definición de estilos de recuadros
-	defstyle/.style={colback=blue!5, colframe=blue!70!black, before={\vspace{5mm}}, after={\vspace{5mm}}}, % Definiciones
+	defstyle/.style={colback=blue!5, colframe=blue!85!black, before={\vspace{5mm}}, after={\vspace{5mm}}}, % Definiciones
 	theostyle/.style={colback=red!5, colframe=red!80!black, before={\vspace{5mm}}, after={\vspace{5mm}}}, % Teoremas
-	propstyle/.style={colback=green!5, colframe=green!60!black, before={\vspace{5mm}}, after={\vspace{5mm}}} % Proposiciones
+	propstyle/.style={colback=green!5, colframe=green!60!black, before={\vspace{5mm}}, after={\vspace{5mm}}}, % Proposiciones
+	corstyle/.style={colback=green!5, colframe=royalfuchsia, before={\vspace{5mm}}, after={\vspace{5mm}}} % cor
 }
 
 % Definicion de las cajas
 \newtcbtheorem[number within=section]{definition}{Definición}{defstyle}{def}
 \newtcbtheorem[number within=section]{theorem}{Teorema}{theostyle}{theo}
 \newtcbtheorem[number within=section]{proposition}{Proposición}{propstyle}{prop}
+\newtcbtheorem[number within=section]{corolary}{Corolario}{corstyle}{cor}
 
 \setlength{\parindent}{0pt}
 \setmargins{2.5cm}       % margen izquierdo
@@ -63,6 +72,7 @@
 \author{Carlos Gómez-Lobo}
 \date{}
 \maketitle
+
 
 \section{Anillos}
 
@@ -371,8 +381,7 @@ Ahora vamos a comprobar algunas cosas sobre la definición anterior:
 	Sean $\bar{a} = \{a + I\}, \bar{b} = \{b + I\}$, entonces $(a + I)(b + I) = ab + \overbrace{\underbrace{aI}_{\in I} + \underbrace{bI}_{\in I} + I}^{\in I} = ab + I \implies \bar{a}\bar{b} = \overline{ab} \;$\checkmark
 \end{enumerate}
 
-\vspace{3mm}
-
+		
 \obs 
 \begin{enumerate}
 	\item Si el anillo $R$ es conmutativo y con unidad, entonces $\faktor{R}{I}$ tamibién lo es y su unidad es $\bar{1}$.
@@ -385,8 +394,438 @@ Ahora vamos a comprobar algunas cosas sobre la definición anterior:
 	\item $\faktor{R}{R} = \{0\}$
 	\item $\faktor{R}{\{0\}} = R$
 	\item $S = \faktor{\R[x] \;}{<x^2 + 1>}$: ¿Qué pinta tiene? En primer lugar, vamos a comprobar que todo elemento de $S$ es equivalente a un elemento de la forma $ax + b, \; a, b \in \R$.
-	
 	Sea $p(x) \in \R[x]$, ¿$\overline{p(x)}$? $p(x) = q(x)(x^2 + 1) + r(x)$ donde $r(x) = 0$ ó $deg(r(x)) \leq 1 \implies p(x) - r(x) \in <x^2 + 1> \implies \overline{p(x)} = \overline{r(x)}$.
 \end{enumeratea}
 
-\end{document}
+
+\subsection{Homomorfismos de anillos}
+
+\vspace{3mm}
+
+\begin{definition}{Homomorfismo de anillos}{homomorfismo}
+Sean $R$ y $T$ anillos. Un \textbf{homomorfismo de anillos} $f : R \longrightarrow T$ es una función que verifica las siguientes propiedades:
+
+\begin{enumerater}
+	\item $f(r + r') = f(r) + f(r'), \; \forall r, r' \in R$
+	\item $f(r \cdot r') = f(r) \cdot f(r'), \; \forall r, r' \in R$
+	\item (Homomorfismo de anillos unitarios) $f(1_R) = 1_T$
+\end{enumerater}
+
+\obs Nosotros siempre utilizaremos homomorfismos de anillos unitarios y nos referiremos a ellos simplemente como homomorfismos.
+
+\end{definition}
+
+\ejs 
+\begin{enumeratea}
+	\item Con este ejemplo vamos a comprobar cuántos homomorfismos existen de $\Z$ en $\Z$.
+	Si utilizamos las propiedades vistas anteirormente, tenemos que $1 \longrightarrow 1 \overset{\text{Prop. 1}}{\implies} n = \underbrace{1 + \cdots + 1}_{\text{n veces}} \longrightarrow f(n) = \underbrace{f(1) + \cdots f(1)}_{\text{n veces}} \implies f = Id$
+	\item Sea $R$ un anillo cualquiera:
+	\[
+	\begin{matrix*}[l]
+		f : \Z &\bs\longrightarrow &\bs R \\
+		\hspace{5mm} 1 &\bs\longrightarrow & \bs1_R \\
+		\hspace{5mm} n &\bs\longrightarrow &\bs f(n) = \underbrace{1_R + \cdots 1_R}_{\text{n veces}}
+	\end{matrix*}
+	\]
+	Un caso especial de este tipo es cuando $p \in \Z$ es un primo y $f(p) = 0_R$, entonces la función:
+	\[
+		\begin{array}{cl}
+			\bar{F} : R &\bs\longrightarrow R \\
+			\hphantom{F :} a &\bs\longrightarrow a^p
+		\end{array}
+	\]
+	Es un homomorfismo de anillos llamado el "homomorfismo de frobenius" \label{homo_frobenius} y cumple que en $R, \; {(a + b)}^p = a^p + b^p$.
+	
+	\item En este comprobaremos si existe algún homomorfismo de $\Z[i]$ en $\Z[\sqrt{2}]$:
+	\[
+	\begin{matrix}
+		f : \Z[i] &\bs\longrightarrow& \bs\Z[\sqrt{2}] \\
+		\hphantom{f :} 1 &\bs\longrightarrow& \bs\bs1 \\
+		n \in \Z & \bs\longrightarrow& \bs n \in \Z
+	\end{matrix}
+	\]
+	La función $f$ mandará al elemento $i$ a un elemento de $\Z[\sqrt{2}]$ de la forma $a + b\sqrt{2}$, sin embargo: 
+	\[f(i^2) = \left \{
+	\begin{matrix*}[l]
+		{f(i)}^2 = {(a + b\sqrt{2})}^2 \geq 0\\
+		f(-1) = -1
+	\end{matrix*} \right . \implies \text{Contradicción}
+	\]
+	\item Sea $\Z[x]$ el anillos de polinomios con coeficientes enteros y $T$ un anillo cualquiera:
+	\[
+	\begin{array}{rl}
+		f : \Z[x] &\bs\longrightarrow T \\
+		x\;\; &\bs\longrightarrow t \in T \\
+		p(x) &\bs\longrightarrow p(t)
+	\end{array}
+	\]
+\end{enumeratea}
+
+\begin{proposition}{Propiedades de los homomorfismos de anillos}{prop_homomorfismos}
+	Sea $f : R \longrightarrow T$ un \hyperref[def:homomorfismo]{homomorfismo de anillos}:
+	\begin{enumeratea}
+		\item Si $S \in R$ es un subanillo, entonces $f(S) \in T$ es un subanillo
+		\item Si $J \in T$ es un ideal, entonces $f^{-1}(J)$ es un ideal de $R$.
+		\item Si $f$ es sobreyectivo e $I \in R$ un ideal, entonces $f(I)$ es un ideal en $T$.
+		\item $Ker\ f = f^{-1}(\{0\})$ es un ideal en $R$.
+		\item $f$ es inyectivo $\iff Ker\ f = \{0\}$.
+	\end{enumeratea}
+\end{proposition}
+
+\demo 
+\begin{enumeratea}
+	\item Por las propiedades de homomorfismos $f(S)$ es un grupo aditivo y el producto es interno y asociativo.
+	\item Teniendo que $\forall s_1, s_2 \in f^{-1}(J), \; \exists t_1, t_2 \in J$ tal que $s_1 = f^{-1}(t_1), s_2 = f^{-1}(t_2)$, vamos a comprobar que cumple las propiedades de un ideal:
+	\begin{enumerater}
+		\item $\underbrace{t_1 - t_2}_{\in f^{-1}(J)} = f(s_1) - f(s_2) = f(s_1 - s_2) \in f^{-1}(J) \implies s_1 - s_2 \in J$
+		\item $\forall t \in T,\ t_1 \cdot t \in f^{-1}(J) \implies \exists r \in R$ tal que $f(r) = t_1 \cdot t = f(s_1) - t \implies t = f(\underbrace{r - s_1}_{r'}) \implies t_1 \cdot t = f(s_1 \cdot s') \in f(J) \implies s_1 \cdot s' \in J$
+	\end{enumerater}
+	\item Como $f$ es sobreyectivo, podemos afirmar que $\forall t \in T, \;\exists r \in R$ tal que $f(r) = t$ y teniendo $t_1, t_2 \in f(I)$ tal que $t_1 = f(s_1), t_2 = f(s_2),\; s_1, s_2 \in I$ entonces:
+	\begin{enumerater}
+		\item $t_1 - t_2 = f(s_1) - f(s_2) = f(\underbrace{s_1 - s_2}_{\in I}) \in f(I)$
+		\item $t_1 \cdot t \ \eqc{sobre} \  f(s_1) \cdot f(s) = f(\underbrace{s_1 \cdot s)}_{\in I} \in f(I)$
+	\end{enumerater}
+	\item Comprobamos una vez más que cumple las propiedades de un ideal teniendo $s_1, s_2 \in Ker\ f$:
+	\begin{enumerater}
+		\item $f(s_1 - s_2) = f(s_1) - f(s_2) = 0 \implies s_1 - s_2 \in Ker\ f$
+		\item $\forall r \in R,\ f(s_1 \cdot r) = f(s_1) \cdot f(r) = 0 \cdot f(r) = 0 \implies s_1 \cdot r \in I$
+	\end{enumerater}
+	\item Vamos a demostrar ambas implicaciones: \\
+	\indent $\implies )$ Es obvio que la antiimagen del $0_T$ es el $0_S$, y por ser inyectiva es el único.
+
+	\indent \ $\Longleftarrow\ )$ Vamos a demostrarlo por reducción al absurdo. Supongamos que $f$ no es inyectiva, es decir, $\exists r_1, r_2 \in R,\ r_1 \neq r_2$ tal que $f(r_1) = f(r_2) = t, t \in T$, entonces:
+	\[
+	f(r_1 - r_2) = f(r_1) - f(r_2) = t - t = 0 \implies r_1 - r_2 \in Ker\ f \implies r_1 - r_2 = 0 \implies r_1 = r_2 \implies \text{Contradicción}
+	\]
+\end{enumeratea}
+\obs Si $I \in R$ es un ideal, en general $f(I) \in T$ \emph{no} es un ideal.
+
+\begin{corolary}{}{homo_cuerpo_inyectivo}
+Sea $K$ un \cuerpo y $f : K \longrightarrow T$, entonces $f$ es necesariamente inyectivo.
+\end{corolary}
+
+\demo Como $Ker\ f$ es un ideal en $K$ y este es un cuerpo, entonces por la proposición \ref{prop:ideales_cuerpo} $Ker\ f$ tiene que ser o bien $K$, que no puede ser porque $1_K$ no iría a $1_T$, o bien $\{0\}$, por lo que es inyectivo.
+
+\vspace{3mm}
+
+\obs Si $f : R \longrightarrow T$ es un homomorfismo de anillos biyectivo, entonces su inverso $f^{-1} : T \longrightarrow R$ es un homomorfismo de anillos. Por tanto, todo homomorfismo de anillos biyectivo es un isomorfismo.
+
+\begin{theorem}{1$^{\text{er}}$ Teorema de isomorfía}{iso_1}
+Sea $f : R \longrightarrow T$ es un \hyperref[def:homomorfismo]{homomorfismo de anillos}, entonces:
+\begin{enumeratea}
+	\item Existe un homomorfismo de anillos $\bar{f}$ de $\faktor{R}{Ker\ f}$ en $T$ que está bien definido tal que $\forall r \in R,\ \bar{f}(\bar{r}) := f(r)$.
+
+	\vspace{-5mm}
+
+	\begin{center}
+		\begin{tikzpicture}
+			\matrix (m) [matrix of math nodes,row sep=3em,column sep=4em,minimum width=2em] {
+			R & T \\
+			\faktor{R}{Ker\ f} & \\
+			};
+			\path[-stealth]
+				(m-1-1) edge node [above] {f} (m-1-2)
+						edge (m-2-1)
+				(m-2-1) edge node [below] {$\bar{f}$} (m-1-2);
+		\end{tikzpicture}
+	\end{center}
+	\item $\bar{f}$ es inyectivo y por tanto hay un isomorfismo:
+	\[
+	\faktor{R}{Ker\ f} \simeq f(R) \in T
+	\]
+	
+\end{enumeratea}
+\end{theorem}
+
+\subsection{Característica de un anillo}
+
+\vspace{3mm}
+
+Sea $R$ un anillo cualquiera y $f$ un homomorfismo de $\Z$ en $R$, entonces se tiene que $Ker\ f \in \Z$ es un ideal pero, ¿cómo son los ideales de $\Z$?
+\begin{enumerate}[label=\alph*)]
+	\item $Ker\ f = \{0\} \implies \Z \longhookrightarrow R$, es decir, $\Z$ es un subanillo de $R$.
+	\item $ker\ f = <n>,\ n \neq 0$
+\end{enumerate}
+
+Utilizando el \hyperref[theo:iso_1]{primer teorema de isomorfía} podemos ver que $\faktor{\Z}{n\Z} \longhookrightarrow R$, por lo que podemos pensar que $\Z_n$ es un subanillo de $R$. Con esto llegamos a la siguiente definición:
+
+\begin{definition}{Característica de un anillo}{caracter}
+Sea $R$ un \anillo y $f$ un \hyperref[def:homomorfismo]{homomorfismo de anillos} de $\Z$ en $R$, entonces definimos la \textbf{característica de un anillo} como:
+\[
+char(R) = \left \{
+\begin{matrix*}[l]
+	0 \text{ si } Ker\ f = 0 \\
+	n \text{ si } ker\ f = <n>
+\end{matrix*} \right .
+\]
+
+Otro modo de definir $char(R)$, es decir que es el orden de $1_R$ como elemento de $(R, +)$. Si el orden de $1_R$ no es finito, entonces decimos que $char(R) = 0$.
+\end{definition}
+
+\nota Cuando decimos por ejemplo que $\Z \subset R$ o alguno de sus conjuntos cocientes en realidad hacemos una abuso de lenguaje y a lo que nos referimos es a que existe un anillo $S$ tal que $\Z \simeq S \subset R$.
+
+\vspace{3mm}
+
+
+\obs Volviendo al ejemplo del homomorfismo de Frobenius, se tiene que si $char(R) = p$, entonces la función
+$\arraycolsep=1pt
+\begin{array}{rcl}
+	R & \overset{F}{\longrightarrow} & R \\
+	a & \longrightarrow & a^p
+\end{array}
+$ es un homomorfismo de anillos.
+
+\ejs
+\begin{enumeratea}
+	\item $char(\Z) = 0$
+	\item $char(\Q) = 0$ (inyectivo)
+	\item $char(\R) = char(\C) = 0$
+	\item $char(\Z_n) = n
+	\left (\arraycolsep=1pt
+	\begin{array}{ccl}
+		\Z & \longrightarrow & \Z_n = \faktor{\Z}{n\Z} \\
+		1 & \longrightarrow & \bar{1}
+	\end{array}
+	\right )$
+	\item $char(R) = char(R[x])\ \ 
+		\left (\arraycolsep=1pt
+		\begin{array}{rcccl}
+			\Z & \longrightarrow & R & \longhookrightarrow & R[x] \\
+			1 & \longrightarrow & 1_R & \longrightarrow & 1_R
+		\end{array}
+		\right)$
+	\item Sea $R = \Z \times \Z_5$ con las operaciones coordenada a coordenada, $char(R) = 0\ \ 
+	\left (\arraycolsep=1pt
+	\begin{array}{ccc}
+		\Z & \longrightarrow & \Z \times \Z_5 \\
+		1 & \longrightarrow & (1, \bar{1})
+	\end{array}
+	\right )$
+\end{enumeratea}
+
+\begin{proposition}{Característica de un dominio de integridad}{carac_DI}
+Sea $R$ un \hyperref[def:DI]{dominio de integridad}, entonces la \hyperref[def:caracter]{característica} de $R$ será $0$ o prima.
+\end{proposition}
+
+\demo Por el \hyperref[theo:iso_1]{primer teorema de isomorfía}, tenemos que:
+\begin{center}
+	\begin{tikzpicture}
+		\matrix (m) [matrix of math nodes,row sep=3em,column sep=4em,minimum width=2em] {
+		\Z & R \\
+		\faktor{\Z}{Ker\ f} & \\
+		};
+		\path[-stealth]
+			(m-1-1) edge node [above] {f} (m-1-2)
+					edge (m-2-1)
+			(m-2-1) edge node [below] {$\bar{f}$} (m-1-2);
+	\end{tikzpicture}
+\end{center}
+
+Entonces, $\faktor{\Z}{Ker\ f} = \faktor{\Z}{n\Z} \subset R$ y como $\bar{f}$ es inyectiva y $R$ un DI, $\Z_n$ tiene que ser también un DI, por lo que $n$ solo podrá ser primo o $0$.
+
+\begin{corolary}{Característica de un cuerpo}{caracter_cuerpo}
+Sea $K$ un \cuerpo, entonces su característica será $0$ o prima.
+\end{corolary}
+
+\demo Resultado directo pues todo cuerpo es un DI.
+
+\begin{proposition}{}{ideales_y_homo}
+Sea $R$ un \anillo, $I \subset R$ un \hyperref[def:ideal]{ideal} y $\pi$ una función de la forma:
+\[\arraycolsep=2pt
+\begin{array}{ccl}
+	R & \overset{\pi}{\longrightarrow} & \faktor{R}{I} \\
+	a & \longrightarrow & \bar{a}\ mod(I)
+\end{array}
+\]
+Entonces $\pi$ es un \hyperref[def:homomorfismo]{homomorfismo de grupos} y se tiene que:
+
+\begin{enumerate}
+	\item Si $\pi$ es sobreyectivo y $J \subset R$ un ideal, entonces $\pi(J) \subset \faktor{R}{I}$ es un ideal.
+	\item Si $a \in R$ entonces $\pi(a) = \pi(a + I)$.
+	\item Si $J \subset R$ es un ideal, entonces $\pi(J) = \pi(J + I)$, siendo $J + I$ el ideal más pequeño que contiene a $J$ y a $I$.
+	\item Sea $L \subset \faktor{R}{I}$ un ideal, entonces $\pi^{-1}(L)$ es un ideal en $R$ y además $I \subset \pi^{-1}(L)$.
+	\item Sean $J_1,\ J_2 \subset R$ ideales tal que $I \subset J_1 \subsetneq J_2$ entonces $\pi(J_1) \subsetneq \pi(J_2)$.
+\end{enumerate}
+\end{proposition}
+
+\demo Vamos a demostrar el punto 5. Está claro que $\pi(J_1) \subset \pi(J_2)$ pero, ¿cómo sabemos que son distintos? Lo comprobamos por redicción al absurdo. Para ello supondremos que $\pi(J_1) = \pi(J_2)$, por lo que $\exists a \in J_2 \setminus J_1,\ b \in J_1$ tal que $\pi(a) = \pi(b)$. Enotnces $\underbrace{a}_{\in J_2 \setminus J_1} = \underbrace{\underbrace{b}_{\in J_1} + \underbrace{r}_{\in I \subset J_1}}_{\in J_1}$. Contradicción.
+
+\begin{theorem}{Correspondencia biyectiva}{corr_biy}
+Sean $R$ un \anillo, $I \in R$ un \hyperref[def:ideal]{ideal} y $\pi$ un \hyperref[def:homomorfismo]{homomorfismo} de $R$ en $\faktor{R}{I}$, entonces se tiene que existe una \textbf{correspondencia biyectiva} entre los ideales de $R$ que contienen a $I$ y los ideales de $\faktor{R}{I}$.
+\end{theorem}
+
+\demo Se deja como ejercicio para el lector.
+
+\vspace{3mm}
+
+\ejs
+\begin{enumeratea}
+	\item Sea $\pi : \Z \longrightarrow \faktor{\Z}{6\Z}$. Vamos a estudiar los ideales que contienen a $<6>$:
+		\[
+		<6> \subset \left \{
+		\begin{array}{c}
+			<6> \\
+			<2> \\
+			<3> \\
+			\Z		
+		\end{array}
+		\right .
+		\longleftrightarrow
+		\begin{array}{l}
+			<\bar{6}> = \{\bar{0}\} \\
+			<\bar{2}> = \{\bar{2},\ \bar{4},\ \bar{6}\} \\
+			<\bar{3}> = \{\bar{0},\ \bar{3}\} \\
+			<\bar{1}> = \Z_6
+		\end{array}
+		\]
+		\item Sea $\pi : \Q[x] \longrightarrow \faktor{\Q[x]\ }{\!\!<x^2 - 1>}$. Repetimos:
+			\[
+			<x^2 - 1> \subset \left \{
+			\begin{array}{c}
+				<x^2 - 1> \\
+				<x - 1> \\
+				<x + 1> \\
+				<1>		
+			\end{array}
+			\right .
+			\longleftrightarrow
+			\begin{array}{l}
+				<\overline{x^2 - 1}> = \{\bar{0}\} \\
+				<\overline{x - 1}> \\
+				<\overline{x + 1}> \\
+				<\overline{1}>
+			\end{array}
+			\]
+
+			En este caso es muy práctico porque es muy sencillo saber cuántos y qué anillos pertenecen a $\Q[x]$ y contienen a $<x^2 - 1>$.
+\end{enumeratea}
+
+\vspace{3mm}
+
+
+\subsection{Ideales primos y maximales}
+
+\vspace{3mm}
+
+\begin{definition}{Ideal primo}{ideal_primo}
+Sea $R$ un \anillo e $I \in R$ un \ideal, se dice que $I$ es un \textbf{ideal primo} si:
+\begin{enumerater}
+	\item $I \subsetneq R$.
+	\item Si $\forall a,b \in R,\ a \cdot b \in I \implies a \in I \text{ ó } b \in I$.
+\end{enumerater}
+\end{definition}
+
+\ejs
+\begin{enumeratea}
+	\item En $\Z,\ <6>$ no es primo ya que $2 \cdot 3 \in <6>$ pero $2,3 \notin <6>$, mientras que $<3>$ sí lo es.
+	\item En $\Z_6,\ <0>$ no es primo porque $\bar{2} \cdot \bar{3} = \bar{0},\ \bar{2}, \bar{3} \notin \{\bar{0}\}$.
+\end{enumeratea}
+
+\begin{proposition}{}{DI_primo}
+Un \anillo $R$ es un \hyperref[def:DI]{dominio de integridad} si y solo si $\{0\}$ es \hyperref[def:ideal_primo]{primo}.
+\end{proposition}
+
+\demo Obv.
+
+\begin{proposition}{}{subanillo_primo}
+Sea $R$ un \anillo e $I \subset R$ un \ideal, $I$ es \hyperref[def:ideal_primo]{primo} si y solo si $\faktor{R}{I}$ es un \hyperref[def:DI]{dominio de integridad}.
+\end{proposition}
+
+\demo Sale directa de traducir la condición de un ideal primo al cociente $\faktor{R}{I}$:
+\[
+\begin{array}{c}
+	a \cdot b \in I \iff a \in I \text{ ó } b \in I \\
+	\bar{a} \cdot \bar{b} = \bar{0} \iff \bar{a} = 0 \text{ ó } \bar{b} = 0
+\end{array}
+\]
+
+\begin{definition}{Ideal maximal}{ideal_maximal}
+Sea $R$ un \anillo e $I \subset R$ un ideal, diremos que $I$ es un \textbf{ideal maximal} si:
+\begin{enumerater}
+	\item $I \subsetneq R$
+	\item Si existe un ideal $J \subset R$ tal que $I \subset J$ entonces o bien $I = J$ o $J = R$.
+\end{enumerater}
+\end{definition}
+
+\ejs
+\begin{enumeratea}
+	\item En $\Z$ los ideales maximales son los generados por números primos.
+	\item En $\Z_6,\ <\bar{2}>$ y $\bar{3}$ son maximales
+\end{enumeratea}
+
+\obs Como la correspondencia biyectiva respeta los contenidos de los ideales tamibén se extiende a los ideales maximales.
+
+\begin{proposition}{}{mxl_cuerpo}
+Sea $R$ un \anillo e $I \subsetneq R$ un \ideal, entonces $I$ es maximal si y solo si $\faktor{R}{I}$ es un \cuerpo.
+\end{proposition}
+
+\demo 
+
+$\Longrightarrow )$ Si $I$ es maximal, por la \hyperref[theo:corr_biy]{correspondencia biyectiva}, $\faktor{R}{I}$ solo tiene dos ideales, $\{0\}$ y $ \faktor{R}{I}$, por lo que es un cuerpo. 
+
+$\Longleftarrow )$ Si $\faktor{R}{I}$ es un cuerpo entonces solo tiene dos ideales, $\{0\}$ y $\faktor{R}{I}$, y por la correspondencia biyectiva $I$ solo está contenido en $I$ y en $R$, por lo que $I$ es maximal.
+
+\begin{corolary}{}{mxl_primo}
+Todo ideal \hyperref[def:ideal_maximal]{maximal} es también \hyperref[def:ideal_primo]{primo}.
+\end{corolary}
+
+\demo Sea $R$ un anillo e $I \subset R$ un ideal, $I$ maximal $\overset{\ref{prop:mxl_cuerpo}}{\implies} \faktor{R}{I}$ es cuerpo $\overset{\ref{prop:grado_DI}}{\implies} \faktor{R}{I}$ es DI $\overset{\ref{prop:DI_primo}}{\implies} I$ es prmio.
+
+\vspace{3mm}
+
+\obs El recíproco no es cierto en general.
+
+\vspace{3mm}
+
+\subsection{Ideales primos y maximales en \texorpdfstring{$K[x]$}{TEXT}}
+
+\vspace{3mm}
+
+\begin{proposition}{}{inclusion_ideal_poli}
+Sean $I, J \in K[x]$ dos ideales tal que $I = <p(x)>$ y $J = <q(x)>$ entonces $I \subset J \iff q(x) \mid p(x)$.
+\end{proposition}
+
+\demo Se deja como ejercicio.
+
+\begin{definition}{Elemento irreducible}{ele_irr}
+En un \anillo $R$ se dice que un elemento es \textbf{irreducible} si $\forall a$ tal que $a = b \cdot c,\ b, c \in R$, se tiene que b ó c son unidades.
+\end{definition}
+
+\ej En $\Z$ los elementos irreducibles son los primos.
+
+\begin{proposition}{}{grad1_irr}
+Sea $K[x]$ el \hyperref[def:anillopoli]{anillo de polinomios} generado por el \cuerpo $K$, se tiene que $\forall p(x) \in K[x]$ si $deg(p(x)) = 1$ entonces $p(x)$ es \hyperref[def:ele_irr]{irreducible}.
+\end{proposition}
+
+\demo Supongamos que $p(x) = s(x) \cdot q(x)$, entonces $deg(s(x)) + deg(q(x)) = 1 \implies q(x) \text{ ó } p(x)$ debe ser una unidad.
+
+\begin{proposition}{}{poli_red}
+Sea $K[x]$ el \hyperref[def:anillopoli]{anillo de polinomios} generado por el \cuerpo $K$, se tiene que $\forall p(x) \in K[x], p(x) \neq 0$ tal que $p(x)$ no es ireducible $\exists q(x), s(x) \in K[x]$ con $deg(q(x)), deg(s(x)) < deg(p(x))$ tal que $p(x) = q(x) \cdot s(x)$.
+\end{proposition}
+
+\demo Por reducción al absurdo, suponemos por ejemplo que $deg(q(x)) = deg(p(x))$, entonces $deg(s(x)) = 0 \implies s(x)$ es una unidad $\implies p(x)$ es irreducible. Contradicción.
+
+\ej En $\Z[x]$ el polinomio $2x + 2$ no es irreducible ya que $2x + 2 = 2 \cdot (x + 1)$ y ni $2$ ni $x + 1$ son unidades.
+
+\begin{definition}{Elemento primo}{ele_primo}
+Sea $R$ un \anillo, se dice que $a \in R$ es \textbf{primo} si cada vez que $a | b \cdot c$ entonces $a | b$ ó $a | c$. Esto es lo mismo que decir que $a$ es \textbf{primo} si $<a>$ es \hyperref[def:ideal_primo]{primo}.
+\end{definition}
+
+\ejs
+
+\begin{enumeratea}
+	\item En $\Z$ los elementos primos son, sorpresa, los primos.
+	\item Consideremos $R = \Z[\sqrt{-3}] \subset \C$ y el elemento $(1 + \sqrt{-3})$, vemos que es irreducible y $(1 + \sqrt{-3})(1 - \sqrt{-3}) = 2 \cdot 2$ pero $(1 + \sqrt{-3}) \nmid 2$ por lo que $1 + \sqrt{-3}$ \emph{no} es primo.
+\end{enumeratea}
+
+\begin{proposition}{}{primo_irr}
+Todo elemento \hyperref[def:ele_primo]{primo} es \hyperref[def:ele_irr]{irreducible}.
+\end{proposition}
+
+\demo
+
+\vspace{3mm}
+
+\obs El recíproco en general no es cierto.
+
+\end{document} 
