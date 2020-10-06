@@ -312,25 +312,25 @@ $\impliedby$) Sea $K$ un anillo y $r \in K, \; r \neq 0$. Vamos a ver que $r$ ti
 Definimos $I := \{rs : s \in K\}$ que es un ideal. Puesto que $I \neq \{0\}$ y solo hay dos ideales, $I = K \implies 1 \in K \implies \exists s \in K$ tal que $s \cdot r = 1 \implies s = r^{-1}$.
 
 \begin{definition}{Ideal generado}{ideal_generado}
-Sea $R$ un \anillo y $\{r_i\}$ una familia de elementos de $R$. Diremos que el \textbf{ideal generado} por $\{r_i\}_{i \in I}$ es el ideal más pequeño que contiene a $\{r_i\}_{i \in I}$ y lo denotamos por $<r_i>_{i \in I} = \left \{ \displaystyle\sum s_j r_i : s_j \in R \right \}$.
+Sea $R$ un \anillo y $\{r_i\}$ una familia de elementos de $R$. Diremos que el \textbf{ideal generado} por $\{r_i\}_{i \in I}$ es el ideal más pequeño que contiene a $\{r_i\}_{i \in I}$ y lo denotamos por $\langle r_i \rangle_{i \in I} = \left \{ \displaystyle\sum s_j r_i : s_j \in R \right \}$.
 \end{definition}
 
-\ej En $\Z[x]$ el ideal generado por $<2, x> = \{2q(x) + xp(x)\ : q(x), p(x) \in \Z\}$
+\ej En $\Z[x]$ el ideal generado por $\langle 2, x \rangle = \{2q(x) + xp(x)\ : q(x), p(x) \in \Z\}$
 
 \begin{definition}{Ideal principal}{ideal_principal}
-Sea $R$ un \anillo, diremos que $I \subset R$ es un \textbf{ideal principal} si $\exists a \in R$ tal que $I = <a>$.
+Sea $R$ un \anillo, diremos que $I \subset R$ es un \textbf{ideal principal} si $\exists a \in R$ tal que $I = \langle a \rangle$.
 \end{definition}
 
 \ej
 \begin{enumeratea}
 \item En $\Z$ todos los ideales son principales.
-\item $<2, x> \subset \Z[x]$ no es principal.
+\item $\langle 2, x \rangle \subset \Z[x]$ no es principal.
 
-Comprobación: Suponemos que $\exists g(x) \in \Z[x]$ tal que $<2, x> = <g(x)>$, entonces $\exists q(x)$ tal que $g(x) \cdot q(x) = 2 \implies deg(g(x)) = 0 \implies g(x) = k \in \Z \implies k = \pm 1, \pm 2$
+Comprobación: Suponemos que $\exists g(x) \in \Z[x]$ tal que $\langle 2, x \rangle = \langle g(x) \rangle$, entonces $\exists q(x)$ tal que $g(x) \cdot q(x) = 2 \implies deg(g(x)) = 0 \implies g(x) = k \in \Z \implies k = \pm 1, \pm 2$
 
-Supongamos que $k = \pm 1$. Entonces $<g(x)> = <\pm 1> =<2, x> = \Z[x]$. Sin embargo, $1 = \underbrace{2p(x)}_{\text{coef. par}} + \cancelto{0}{\underbrace{q(x)x}_{grado \geq 1}}$. Contradicción.
+Supongamos que $k = \pm 1$. Entonces $\langle g(x) \rangle = \langle \pm 1 \rangle = \langle 2, x \rangle = \Z[x]$. Sin embargo, $1 = \underbrace{2p(x)}_{\text{coef. par}} + \cancelto{0}{\underbrace{q(x)x}_{grado \geq 1}}$. Contradicción.
 
-Ahora si suponemos que $k = \pm 2 \implies <g(x)> = <\pm 2> = <2, x> =$ polinomios con coeficientes pares, pero $x \notin <\pm 2>$. Contradicción.
+Ahora si suponemos que $k = \pm 2 \implies \langle g(x) \rangle = \langle \pm 2 \rangle = \langle 2, x \rangle =$ polinomios con coeficientes pares, pero $x \notin \langle \pm 2 \rangle$. Contradicción.
 \end{enumeratea}
 
 \begin{definition}{Dominio de ideales principales (DIP)}{DIP}
@@ -344,7 +344,7 @@ Sea $K$ un \cuerpo entonces $K[x]$ es un \hyperref[def:DIP]{dominio de ideales p
 \demo Sea $I \subset K[x]$ un ideal.
 \begin{itemize}
 \item Si $I = \{0\}$ \checkmark
-\item Suponemos que $I \neq \{0\} \implies \exists p(x) \in I, \; p(x) \neq 0$ y podemos definir $\Lambda = \{deg(p(x)) : p(x) \in I\} \neq \emptyset, \; \Lambda \subset \N$. Por la propiedad de buen orden de $\N$ podemos afirmar que $\Lambda$ tiene un elemento mínimo $n$, por lo que $\exists p(x) \in I$ tal que $deg(px) = n$ y además $<p(x)> \subseteq I$. Ahora vamos a demostrar por el algoritmo de la división de polinomios que $<p(x)> = I$.
+\item Suponemos que $I \neq \{0\} \implies \exists p(x) \in I, \; p(x) \neq 0$ y podemos definir $\Lambda = \{deg(p(x)) : p(x) \in I\} \neq \emptyset, \; \Lambda \subset \N$. Por la propiedad de buen orden de $\N$ podemos afirmar que $\Lambda$ tiene un elemento mínimo $n$, por lo que $\exists p(x) \in I$ tal que $deg(px) = n$ y además $\langle p(x) \rangle \subseteq I$. Ahora vamos a demostrar por el algoritmo de la división de polinomios que $\langle p(x) \rangle = I$.
 
 Sea $s(x) \in I \implies s(x) = q(x)p(x) + r(x)$ y hay dos posibilidades para $r(x)$:
 	\begin{itemize}[label=$\circ$]
@@ -357,7 +357,7 @@ Sea $s(x) \in I \implies s(x) = q(x)p(x) + r(x)$ y hay dos posibilidades para $r
 
 \vspace{5mm}
 
-\obs El generador de un ideal $I \subset K[x]$ no tiene por qué ser único: si $I = <p (x)>$ y $a \in K$, entonces $I = <ap(x)>$. Para describir estos anillos de forma canónica utilizaremos como generador un \hyperref[def:poli_mon]{polinomio mónico}.
+\obs El generador de un ideal $I \subset K[x]$ no tiene por qué ser único: si $I = \langle p(x) \rangle$ y $a \in K$, entonces $I = \langle ap(x) \rangle$. Para describir estos anillos de forma canónica utilizaremos como generador un \hyperref[def:poli_mon]{polinomio mónico}.
 
 \subsection{Anillos cociente}
 
@@ -393,8 +393,8 @@ Ahora vamos a comprobar algunas cosas sobre la definición anterior:
 	\item $\faktor{\Z}{n\Z} = \Z_n$
 	\item $\faktor{R}{R} = \{0\}$
 	\item $\faktor{R}{\{0\}} = R$
-	\item $S = \faktor{\R[x] \;}{<x^2 + 1>}$: ¿Qué pinta tiene? En primer lugar, vamos a comprobar que todo elemento de $S$ es equivalente a un elemento de la forma $ax + b, \; a, b \in \R$.
-	Sea $p(x) \in \R[x]$, ¿$\overline{p(x)}$? $p(x) = q(x)(x^2 + 1) + r(x)$ donde $r(x) = 0$ ó $deg(r(x)) \leq 1 \implies p(x) - r(x) \in <x^2 + 1> \implies \overline{p(x)} = \overline{r(x)}$.
+	\item $S = \faktor{\R[x] \;}{\langle x^2 + 1 \rangle}$: ¿Qué pinta tiene? En primer lugar, vamos a comprobar que todo elemento de $S$ es equivalente a un elemento de la forma $ax + b, \; a, b \in \R$.
+	Sea $p(x) \in \R[x]$, ¿$\overline{p(x)}$? $p(x) = q(x)(x^2 + 1) + r(x)$ donde $r(x) = 0$ ó $deg(r(x)) \leq 1 \implies p(x) - r(x) \in \langle x^2 + 1 \rangle \implies \overline{p(x)} = \overline{r(x)}$.
 \end{enumeratea}
 
 
@@ -544,7 +544,7 @@ Sea $f : R \longrightarrow T$ es un \hyperref[def:homomorfismo]{homomorfismo de 
 Sea $R$ un anillo cualquiera y $f$ un homomorfismo de $\Z$ en $R$, entonces se tiene que $Ker\ f \in \Z$ es un ideal pero, ¿cómo son los ideales de $\Z$?
 \begin{enumerate}[label=\alph*)]
 	\item $Ker\ f = \{0\} \implies \Z \longhookrightarrow R$, es decir, $\Z$ es un subanillo de $R$.
-	\item $ker\ f = <n>,\ n \neq 0$
+	\item $ker\ f = \langle n \rangle,\ n \neq 0$
 \end{enumerate}
 
 Utilizando el \hyperref[theo:iso_1]{primer teorema de isomorfía} podemos ver que $\faktor{\Z}{n\Z} \longhookrightarrow R$, por lo que podemos pensar que $\Z_n$ es un subanillo de $R$. Con esto llegamos a la siguiente definición:
@@ -555,7 +555,7 @@ Sea $R$ un \anillo y $f$ un \hyperref[def:homomorfismo]{homomorfismo de anillos}
 char(R) = \left \{
 \begin{matrix*}[l]
 	0 \text{ si } Ker\ f = 0 \\
-	n \text{ si } ker\ f = <n>
+	n \text{ si } ker\ f = \langle n \rangle
 \end{matrix*} \right .
 \]
 
@@ -660,44 +660,44 @@ Sean $R$ un \anillo, $I \in R$ un \hyperref[def:ideal]{ideal} y $\pi$ un \hyperr
 
 \ejs
 \begin{enumeratea}
-	\item Sea $\pi : \Z \longrightarrow \faktor{\Z}{6\Z}$. Vamos a estudiar los ideales que contienen a $<6>$:
+	\item Sea $\pi : \Z \longrightarrow \faktor{\Z}{6\Z}$. Vamos a estudiar los ideales que contienen a $\langle 6 \rangle$:
 		\[
-		<6> \subset \left \{
+		\langle 6 \rangle \subset \left \{
 		\begin{array}{c}
-			<6> \\
-			<2> \\
-			<3> \\
+			\langle 6 \rangle \\
+			\langle 2 \rangle \\
+			\langle 3 \rangle \\
 			\Z		
 		\end{array}
 		\right .
 		\longleftrightarrow
 		\begin{array}{l}
-			<\bar{6}> = \{\bar{0}\} \\
-			<\bar{2}> = \{\bar{2},\ \bar{4},\ \bar{6}\} \\
-			<\bar{3}> = \{\bar{0},\ \bar{3}\} \\
-			<\bar{1}> = \Z_6
+			\langle \bar{6} \rangle = \{\bar{0}\} \\
+			\langle \bar{2} \rangle = \{\bar{2},\ \bar{4},\ \bar{6}\} \\
+			\langle \bar{3} \rangle = \{\bar{0},\ \bar{3}\} \\
+			\langle \bar{1} \rangle = \Z_6
 		\end{array}
 		\]
-		\item Sea $\pi : \Q[x] \longrightarrow \faktor{\Q[x]\ }{\!\!<x^2 - 1>}$. Repetimos:
+		\item Sea $\pi : \Q[x] \longrightarrow \faktor{\Q[x]\ }{\langle x^2 - 1 \rangle}$. Repetimos:
 			\[
-			<x^2 - 1> \subset \left \{
+			\langle x^2 - 1 \rangle \subset \left \{
 			\begin{array}{c}
-				<x^2 - 1> \\
-				<x - 1> \\
-				<x + 1> \\
-				<1>		
+				\langle x^2 - 1 \rangle \\
+				\langle x - 1 \rangle \\
+				\langle x + 1 \rangle \\
+				\langle 1 \rangle		
 			\end{array}
 			\right .
 			\longleftrightarrow
 			\begin{array}{l}
-				<\overline{x^2 - 1}> = \{\bar{0}\} \\
-				<\overline{x - 1}> \\
-				<\overline{x + 1}> \\
-				<\overline{1}>
+				\langle \overline{x^2 - 1} \rangle = \{\bar{0}\} \\
+				\langle \overline{x - 1} \rangle \\
+				\langle \overline{x + 1} \rangle \\
+				\langle \overline{1} \rangle
 			\end{array}
 			\]
 
-			En este caso es muy práctico porque es muy sencillo saber cuántos y qué anillos pertenecen a $\Q[x]$ y contienen a $<x^2 - 1>$.
+			En este caso es muy práctico porque es muy sencillo saber cuántos y qué anillos pertenecen a $\Q[x]$ y contienen a $\langle x^2 - 1 \rangle$.
 \end{enumeratea}
 
 \vspace{3mm}
@@ -717,8 +717,8 @@ Sea $R$ un \anillo e $I \in R$ un \ideal, se dice que $I$ es un \textbf{ideal pr
 
 \ejs
 \begin{enumeratea}
-	\item En $\Z,\ <6>$ no es primo ya que $2 \cdot 3 \in <6>$ pero $2,3 \notin <6>$, mientras que $<3>$ sí lo es.
-	\item En $\Z_6,\ <0>$ no es primo porque $\bar{2} \cdot \bar{3} = \bar{0},\ \bar{2}, \bar{3} \notin \{\bar{0}\}$.
+	\item En $\Z,\ \langle 6 \rangle$ no es primo ya que $2 \cdot 3 \in \langle 6 \rangle$ pero $2,3 \notin \langle 6 \rangle$, mientras que $\langle 3 \rangle$ sí lo es.
+	\item En $\Z_6,\ \langle 0 \rangle$ no es primo porque $\bar{2} \cdot \bar{3} = \bar{0},\ \bar{2}, \bar{3} \notin \{\bar{0}\}$.
 \end{enumeratea}
 
 \begin{proposition}{}{DI_primo}
@@ -750,7 +750,7 @@ Sea $R$ un \anillo e $I \subset R$ un ideal, diremos que $I$ es un \textbf{ideal
 \ejs
 \begin{enumeratea}
 	\item En $\Z$ los ideales maximales son los generados por números primos.
-	\item En $\Z_6,\ <\bar{2}>$ y $\bar{3}$ son maximales
+	\item En $\Z_6,\ \langle \bar{2} \rangle$ y $\bar{3}$ son maximales
 \end{enumeratea}
 
 \obs Como la correspondencia biyectiva respeta los contenidos de los ideales tamibén se extiende a los ideales maximales.
@@ -782,13 +782,13 @@ Todo ideal \hyperref[def:ideal_maximal]{maximal} es también \hyperref[def:ideal
 \vspace{3mm}
 
 \begin{proposition}{}{inclusion_ideal_poli}
-Sean $I, J \in K[x]$ dos ideales tal que $I = <p(x)>$ y $J = <q(x)>$ entonces $I \subset J \iff q(x) \mid p(x)$.
+Sean $I, J \in K[x]$ dos ideales tal que $I = \langle p(x) \rangle$ y $J = \langle q(x) \rangle$ entonces $I \subset J \iff q(x) \mid p(x)$.
 \end{proposition}
 
 \demo Se deja como ejercicio.
 
 \begin{definition}{Elemento irreducible}{ele_irr}
-En un \anillo $R$ se dice que un elemento es \textbf{irreducible} si $\forall a$ tal que $a = b \cdot c,\ b, c \in R$, se tiene que b ó c son unidades.
+En un \anillo $R$ se dice que un elemento $a$ es \textbf{irreducible} si para $a = b \cdot c,\ b, c \in R$, se tiene que b ó c son unidades.
 \end{definition}
 
 \ej En $\Z$ los elementos irreducibles son los primos.
@@ -808,7 +808,7 @@ Sea $K[x]$ el \hyperref[def:anillopoli]{anillo de polinomios} generado por el \c
 \ej En $\Z[x]$ el polinomio $2x + 2$ no es irreducible ya que $2x + 2 = 2 \cdot (x + 1)$ y ni $2$ ni $x + 1$ son unidades.
 
 \begin{definition}{Elemento primo}{ele_primo}
-Sea $R$ un \anillo, se dice que $a \in R$ es \textbf{primo} si cada vez que $a | b \cdot c$ entonces $a | b$ ó $a | c$. Esto es lo mismo que decir que $a$ es \textbf{primo} si $<a>$ es \hyperref[def:ideal_primo]{primo}.
+Sea $R$ un \anillo, se dice que $a \in R$ es \textbf{primo} si cada vez que $a | b \cdot c$ entonces $a | b$ ó $a | c$. Esto es lo mismo que decir que $a$ es \textbf{primo} si $\langle a \rangle$ es \hyperref[def:ideal_primo]{primo}.
 \end{definition}
 
 \ejs
@@ -822,10 +822,20 @@ Sea $R$ un \anillo, se dice que $a \in R$ es \textbf{primo} si cada vez que $a |
 Todo elemento \hyperref[def:ele_primo]{primo} es \hyperref[def:ele_irr]{irreducible}.
 \end{proposition}
 
-\demo
+\demo Supongamos que $a \in R$ es primo. Tenemos que $a = b \cdot c$ para algunos $b,c \in R$, en particular, $a | b \cdot c$ y por ser $a$ primo entonces $a | b$ ó $a | c$. Sin perder en generalidad suponemos que $a | b$ y por tanto $\exists k \in R$ tal que $b = a \cdot k$. Si sustituimos en la expresión inicial, obtenemos que $a = a \cdot k \cdot \cdot c$, que por la propiedad cancelativa vemos que $k \cdot c = 1$ lo que implica que $c$ es unidad en $R$.
 
 \vspace{3mm}
 
 \obs El recíproco en general no es cierto.
+
+\begin{theorem}{}{ideal_poli_irr}
+Sea $I = \langle p(x)\rangle \subset K[x]$ un \ideal, entonces $I$ es \hyperref[def:ideal_maximal]{maximal} si y solo si $p(x)$ es \hyperref[def:ele_irr]{irreducible}.
+\end{theorem}
+
+\demo 
+
+$\Longrightarrow )$ Vamos a comprobarlo por reducción al absurdo. Para ello, supongamos que $p(x)$ no es irreducible, es decir, $\exists q(x), s(x)$ tal que $p(x) = q(x) \cdot s(x),\ deg(q(x), s(x)) > 1$, entonces tendríamos que $I = \langle p(x) \rangle \subsetneq \langle q(x) \rangle \subsetneq K[x]$. Contradicción porque $I$ es un ideal maximal.
+
+$\Longleftarrow )$ De nuevo, vamos a probarlo por reducción al absurdo. Empezamos suponiendo que existe un ideal $J$ tal que $I \subsetneq J \subsetneq K[x]$, entonces como $K[x]$ es un \hyperref[def:DIP]{dominio de ideales principales}, existe un polinomio $q(x)$ tal que $J = \langle q(x) \rangle$ y que cumple que $q(x) | p(x),\ q(x) \notin K$ porque $I \subsetneq J$. Por tanto tenemos que $\exists s(x) \in K[x]$ tal que $p(x) = q(x) \cdot s(x)$ con $s(x) \notin K$ ya que si no $I = J$, pero si $deg(q(x), s(x)) > 1$ entonces $p(x)$ no es irreducible. Contradicción.
 
 \end{document} 
