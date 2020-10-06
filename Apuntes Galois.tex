@@ -793,17 +793,19 @@ En un \anillo $R$ se dice que un elemento $a$ es \textbf{irreducible} si para $a
 
 \ej En $\Z$ los elementos irreducibles son los primos.
 
-\begin{proposition}{}{grad1_irr}
+\begin{proposition}{Polinomios de grado 1 irreducibles}{grad1_irr}
 Sea $K[x]$ el \hyperref[def:anillopoli]{anillo de polinomios} generado por el \cuerpo $K$, se tiene que $\forall p(x) \in K[x]$ si $deg(p(x)) = 1$ entonces $p(x)$ es \hyperref[def:ele_irr]{irreducible}.
 \end{proposition}
 
 \demo Supongamos que $p(x) = s(x) \cdot q(x)$, entonces $deg(s(x)) + deg(q(x)) = 1 \implies q(x) \text{ ó } p(x)$ debe ser una unidad.
 
 \begin{proposition}{}{poli_red}
-Sea $K[x]$ el \hyperref[def:anillopoli]{anillo de polinomios} generado por el \cuerpo $K$, se tiene que $\forall p(x) \in K[x], p(x) \neq 0$ tal que $p(x)$ no es ireducible $\exists q(x), s(x) \in K[x]$ con $deg(q(x)), deg(s(x)) < deg(p(x))$ tal que $p(x) = q(x) \cdot s(x)$.
+Sea $K[x]$ el \hyperref[def:anillopoli]{anillo de polinomios} generado por el \cuerpo $K$, se tiene que $\forall p(x) \in K[x], p(x) \neq 0$ tal que $p(x)$ no es \hyperref[def:ele_irr]{ireducible} $\exists q(x), s(x) \in K[x]$ con $deg(q(x)), deg(s(x)) < deg(p(x))$ tal que $p(x) = q(x) \cdot s(x)$.
 \end{proposition}
 
 \demo Por reducción al absurdo, suponemos por ejemplo que $deg(q(x)) = deg(p(x))$, entonces $deg(s(x)) = 0 \implies s(x)$ es una unidad $\implies p(x)$ es irreducible. Contradicción.
+
+\vspace{3mm}
 
 \ej En $\Z[x]$ el polinomio $2x + 2$ no es irreducible ya que $2x + 2 = 2 \cdot (x + 1)$ y ni $2$ ni $x + 1$ son unidades.
 
@@ -837,5 +839,11 @@ Sea $I = \langle p(x)\rangle \subset K[x]$ un \ideal, entonces $I$ es \hyperref[
 $\Longrightarrow )$ Vamos a comprobarlo por reducción al absurdo. Para ello, supongamos que $p(x)$ no es irreducible, es decir, $\exists q(x), s(x)$ tal que $p(x) = q(x) \cdot s(x),\ deg(q(x), s(x)) > 1$, entonces tendríamos que $I = \langle p(x) \rangle \subsetneq \langle q(x) \rangle \subsetneq K[x]$. Contradicción porque $I$ es un ideal maximal.
 
 $\Longleftarrow )$ De nuevo, vamos a probarlo por reducción al absurdo. Empezamos suponiendo que existe un ideal $J$ tal que $I \subsetneq J \subsetneq K[x]$, entonces como $K[x]$ es un \hyperref[def:DIP]{dominio de ideales principales}, existe un polinomio $q(x)$ tal que $J = \langle q(x) \rangle$ y que cumple que $q(x) | p(x),\ q(x) \notin K$ porque $I \subsetneq J$. Por tanto tenemos que $\exists s(x) \in K[x]$ tal que $p(x) = q(x) \cdot s(x)$ con $s(x) \notin K$ ya que si no $I = J$, pero si $deg(q(x), s(x)) > 1$ entonces $p(x)$ no es irreducible. Contradicción.
+
+\begin{corolary}{}{irr_genera_primo}
+Todo elemento \hyperref[def:ele_irr]{irreducible} en $K[x]$ genera un \ideal \hyperref[def:ideal_primo]{primo} y por tanto es \hyperref[def:ele_primo]{primo}.
+\end{corolary}
+
+\demo $p(x) \text{ irreducible} \overset{\ref{theo:ideal_poli_irr}}{\implies} \langle p(x) \rangle \text{ maximal} \overset{\ref{cor:mxl_primo}}{\implies} \langle p(x) \rangle \text{ primo} \implies  p(x)$ primo.
 
 \end{document} 
