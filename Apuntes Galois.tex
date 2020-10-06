@@ -29,6 +29,7 @@
 \newcommand{\ejs}{\underline{Ejemplos:} }
 \newcommand{\nota}{\underline{Notación:} }
 \newcommand{\demo}{\underline{Demostración:} }
+\newcommand{\adv}{{\color{red}\underline{Advertencia:} }}
 \newcommand{\anillo}[1][]{\hyperref[def:anillo]{anillo}#1 }
 \newcommand{\cuerpo}[1][]{\hyperref[def:cuerpo]{cuerpo}#1 }
 \newcommand{\ideal}[1][]{\hyperref[def:ideal]{ideal}#1 }
@@ -177,7 +178,7 @@ Dado un anillo $R$ y un elemento $a$, podemos definir el \textbf{menor subanillo
 
 \vspace{3mm}
 
-\begin{definition}{Anillo de polinomios}{anillopoli}
+\begin{definition}{Anillo de polinomios}{anillo_poli}
 Sea $R$ un anillo, llamaremos a $R[x]$ al \textbf{anillo de polinomios con coeficientes en $\mathbf{R}$} y que será de la forma $R[x] = \left \{ \displaystyle\sum_{k = 0}^{n} r_k x^k, \; \forall r \in R \right \}$.
 \end{definition}
 
@@ -794,13 +795,13 @@ En un \anillo $R$ se dice que un elemento $a$ es \textbf{irreducible} si para $a
 \ej En $\Z$ los elementos irreducibles son los primos.
 
 \begin{proposition}{Polinomios de grado 1 irreducibles}{grad1_irr}
-Sea $K[x]$ el \hyperref[def:anillopoli]{anillo de polinomios} generado por el \cuerpo $K$, se tiene que $\forall p(x) \in K[x]$ si $deg(p(x)) = 1$ entonces $p(x)$ es \hyperref[def:ele_irr]{irreducible}.
+Sea $K[x]$ el \hyperref[def:anillo_poli]{anillo de polinomios} generado por el \cuerpo $K$, se tiene que $\forall p(x) \in K[x]$ si $deg(p(x)) = 1$ entonces $p(x)$ es \hyperref[def:ele_irr]{irreducible}.
 \end{proposition}
 
 \demo Supongamos que $p(x) = s(x) \cdot q(x)$, entonces $deg(s(x)) + deg(q(x)) = 1 \implies q(x) \text{ ó } p(x)$ debe ser una unidad.
 
 \begin{proposition}{}{poli_red}
-Sea $K[x]$ el \hyperref[def:anillopoli]{anillo de polinomios} generado por el \cuerpo $K$, se tiene que $\forall p(x) \in K[x], p(x) \neq 0$ tal que $p(x)$ no es \hyperref[def:ele_irr]{ireducible} $\exists q(x), s(x) \in K[x]$ con $deg(q(x)), deg(s(x)) < deg(p(x))$ tal que $p(x) = q(x) \cdot s(x)$.
+Sea $K[x]$ el \hyperref[def:anillo_poli]{anillo de polinomios} generado por el \cuerpo $K$, se tiene que $\forall p(x) \in K[x], p(x) \neq 0$ tal que $p(x)$ no es \hyperref[def:ele_irr]{ireducible} $\exists q(x), s(x) \in K[x]$ con $deg(q(x)), deg(s(x)) < deg(p(x))$ tal que $p(x) = q(x) \cdot s(x)$.
 \end{proposition}
 
 \demo Por reducción al absurdo, suponemos por ejemplo que $deg(q(x)) = deg(p(x))$, entonces $deg(s(x)) = 0 \implies s(x)$ es una unidad $\implies p(x)$ es irreducible. Contradicción.
@@ -844,6 +845,74 @@ $\Longleftarrow )$ De nuevo, vamos a probarlo por reducción al absurdo. Empezam
 Todo elemento \hyperref[def:ele_irr]{irreducible} en $K[x]$ genera un \ideal \hyperref[def:ideal_primo]{primo} y por tanto es \hyperref[def:ele_primo]{primo}.
 \end{corolary}
 
-\demo $p(x) \text{ irreducible} \overset{\ref{theo:ideal_poli_irr}}{\implies} \langle p(x) \rangle \text{ maximal} \overset{\ref{cor:mxl_primo}}{\implies} \langle p(x) \rangle \text{ primo} \implies  p(x)$ primo.
+\demo $p(x) \text{ irreducible} \overset{\ref{theo:ideal_poli_irr}}{\implies} \langle p(x) \rangle \text{ maximal} \overset{cor \ref{cor:mxl_primo}}{\implies} \langle p(x) \rangle \text{ primo} \implies  p(x)$ primo.
+
+\begin{definition}{Dominio de factorización única}{DFU}
+Sea $R[x]$ un \hyperref[def:anillo_poli]{anillo de polinomios}, decimos que es un \textbf{dominio de factorización única} si todo polinomio de $R[x]$ de grado mayor o igual que uno se escribe de manera única como producto de un número finito de polinomios irreducibles, salvo el orden de los factores o producto por unidades.
+\end{definition}
+
+\begin{theorem}{}{kx_DFU}
+El \hyperref[def:anillo_poli]{anillo de polinomios} $K[x]$ es un \hyperref[def:DFU]{dominio de factorización única}.
+\end{theorem}
+
+\demo Por inducción en el grado:
+
+\begin{enumerate}
+	\item Si $deg(p(x)) = 1,\ p(x)$ irreducible. \checkmark
+	\item Suponemos que el temorema vale para polinomios de grado $< n,\ n > 1$.
+	\begin{itemize}
+		\item Si $p(x)$ irreducible. \checkmark
+		\item Si no, por la proposición \ref{prop:poli_red} $\exists q(x), r(x) \in K[x]$ tal que $p(x) = q(x) \cdot r(x),\ deg(q(x), r(x)) < deg(p(x))$ y por hipótesis de inducción $q(x)$ y $r(x)$ se pueden escribir como producto de irreducibles. \checkmark
+	\end{itemize}
+\end{enumerate}
+
+Ahora veamos la unicidad. Supongamos que $p(x) = q_1(x) \cdots q_m(x) = s_1(x) \cdots s_l(x);\ q_i, s_j$ irreducibles $\forall i = 1...m, j = 1...l$. Como $q_1(x)$ es irredcucible, también es primo y como divide a $s_1(x) \cdots s_l(x)$ divide a alguno de los factores, es decir, $\exists j$ tal que $q_1(x) | s_j(x)$ pero como $s_j(x)$ es irreducible $q_1(x) \cdot u = s_j(x),\ u$ unidad. Si utilizamos este argumento iterando con todos los irreducibles, se concluye la unidad.
+
+\begin{definition}{Raíz de un polinomio}{raiz_poli}
+Sea $R[x]$ un \hyperref[def:anillo_poli]{anillo de polinomios}, decimos que un $a \in R$ es una \textbf{raíz} de $p(x)$ si $p(a) = 0$ o lo que es lo mismo, si el resto de dividir $p(x)$ entre $x - a$ es $0$.
+\end{definition}
+
+\begin{proposition}{Propiedades de $K[x]$}{prop_k}
+Sea $K[x]$ el \hyperref[def:anillo_poli]{anillo de polinomios} generado por el \cuerpo $K$. Entonces $\forall p(x) \in K[x]$ se cumple que:
+
+\begin{enumerate}
+	\item Si $p(x)$ tiene grado 1 tiene la raíz $-b \cdot a^{-1}$ y es irreducible.
+	\item Si $deg(p(x)) > 1$ y $p(x)$ tiene una raíz en $K$, $p(x)$ \emph{no} es irreducible.
+	\item Si $deg(p(x) = 2$ entonces $p(x)$ es irreducible si y solo si \emph{no} tiene raíces en $K$.
+	\item Si $deg(p(x)) = 3$ entonces $p(x)$ es irreducible si y solo si \emph{no} tiene raíces en $K$.
+\end{enumerate}
+\end{proposition}
+
+\demo 
+\begin{enumerate}
+	\item $p(x) = ax + b = 0 \implies x = -b \cdot a^{-1}$ y es irreducible por la proposición \ref{prop:grad1_irr}.
+	\item Si $p(x)$ tiene una raíz entonces es divisible por $x - a$ por lo que no es irreducible.
+	\item La primera implicación es como el anterior si se ve como que si $p(x)$ tiene raíces entonces no es irreducible. Si hacemos lo mismo con la implicación inversa solo tenemos que demostrar que si $p(x)$ no es irreducible entonces tiene raíces. Entonces, si $p(x)$ es irreducible, $\exists q(x), r(x) \in K[x]$ tal que $p(x) = q(x) \cdot r(x)$ pero como $q(x)$ y $r(x)$ no son unidades y su grado es menor que dos, tienen que ser de grado uno y por tanto se pueden escribir de la forma $b(x - a)$, por lo que $a$ es una raíz.
+	\item La primera implicación es igual que la anterior y la inversa es igual teniendo en cuenta que por ser irreducible si $p(x) = q(x) \cdot r(x)$, estos serán de grados 1-2 ó 1-1-1 que por lo que hemos visto en el apartado anterior tendrá una raíz.
+\end{enumerate}
+
+\vspace{3mm}
+
+\obs Si $deg(p(x)) > 3$ entonces $p(x)$ \emph{no} ser irreducible y al mismo tiempo no tener raíces en $K$.
+
+\vspace{3mm}
+
+\obs En $\R,\ p(x) = (x^2 + 1)(x^2 + 3)$ no tiene raíces en $\R$ pero no es irreducible.
+
+\vspace{3mm}
+
+\ejs
+\begin{enumeratea}
+	\item En $\C$ los únicos polinomios irreducibles son los de grado 1.
+	\item EN $\R$ los irreducibles son los de grado 1 ó 2.
+	\item Si $deg(p(x))$ es impar, $p(x)$ \emph{no} es irreducible ya que por el teorema de Bolzano tiene al menos una raíz real.
+	\item Si $deg(p(x))$ es par y $\alpha \in \C \setminus \R$ es una raíz de $p(x)$, entonces $\bar{\alpha}$ también lo es y $(x - \alpha)(x - \bar{\alpha}) \in \R[x]$ divide a $p(x)$.
+	\item Por el criterio de Eisenstein existen polinomios irreducibles de cualquier grado en $\Q[x]$.
+\end{enumeratea}
+
+\vspace{3mm}
+
+\adv Para comprobar si un polinomio de grado $> 3$ es irreducible \emph{no} basta decir que no tiene raíces.
+
 
 \end{document} 
